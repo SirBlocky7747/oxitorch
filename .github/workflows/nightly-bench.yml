@@ -1,0 +1,49 @@
+name: nightly-bench
+
+on:
+  schedule:
+    # 02:30 UTC daily.
+    - cron: "30 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bench:
+    name: Criterion benches (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Run criterion benches
+        run: cargo bench --workspace
+      - name: NumPy baseline (informational)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Record NumPy matmul baseline
+        run: |
+          pip install numpy
+          python benchmarks/np_matmul_baseline.py --sizes 64 128 256 512
+
+  regression-check:
+    name: Perf regression check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Run benches with output for regression tracking
+        run: cargo bench --workspace -- --save-baseline nightly
+      # Phase 8 wires up automatic comparison against the rolling baseline
+      # (fail on >10% regression). The baseline artifact is stored from day 1.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: criterion-baseline-${{ github.run_id }}
+          path: target/criterion

@@ -1,0 +1,18 @@
+[package]
+name = "oxi-autograd"
+description = "Computation graph and reverse-mode automatic differentiation for oxitorch (Phase 2)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+oxi-core.workspace = true
+oxi-tensor.workspace = true

@@ -1,0 +1,35 @@
+[package]
+name = "oxi-bindings"
+description = "PyO3 binding layer for oxitorch: exposes the Rust engine to the `oxitorch` Python package."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+
+[lints]
+workspace = true
+
+[lib]
+name = "oxitorch"
+# cdylib: the Python extension module. rlib: lets `cargo test` run this crate
+# and lets future tooling link the bindings from Rust.
+crate-type = ["cdylib", "rlib"]
+
+[features]
+# Enabled by maturin builds via pyproject.toml (`features =
+# ["pyo3/extension-module"]`). Deliberately NOT a default feature: with the
+# feature on, the crate doesn't link libpython, which breaks `cargo test` on
+# some platforms. Plain `cargo test`/`cargo clippy` therefore run without it.
+extension-module = ["pyo3/extension-module"]
+
+[dependencies]
+oxi-autograd.workspace = true
+oxi-core.workspace = true
+oxi-data.workspace = true
+oxi-tensor.workspace = true
+pyo3 = "0.27"
+bytemuck = "1"

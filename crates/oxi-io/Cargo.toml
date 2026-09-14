@@ -1,0 +1,18 @@
+[package]
+name = "oxi-io"
+description = "Serialization and interop for oxitorch: safetensors, state dicts, checkpoints (Phase 6)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+oxi-core.workspace = true
+oxi-tensor.workspace = true

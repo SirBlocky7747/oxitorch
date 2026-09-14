@@ -1,0 +1,63 @@
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "oxitorch"
+dynamic = ["version"]
+description = "A PyTorch-equivalent deep-learning library with a Rust core, exposed to Python via PyO3."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT OR Apache-2.0" }
+authors = [{ name = "Oxitorch contributors" }]
+keywords = ["pytorch", "deep-learning", "tensors", "autograd", "machine-learning", "rust"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Rust",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+    "numpy>=1.24,<3",
+]
+
+[project.urls]
+Homepage = "https://github.com/oxitorch/oxitorch"
+Repository = "https://github.com/oxitorch/oxitorch"
+Changelog = "https://github.com/oxitorch/oxitorch/blob/main/CHANGELOG.md"
+
+[tool.maturin]
+python-source = "python"
+module-name = "oxitorch._native"
+manifest-path = "crates/oxi-bindings/Cargo.toml"
+features = ["pyo3/extension-module"]
+# sdist should contain everything needed to rebuild the extension.
+include = [
+    { path = "crates/**/*", format = "sdist" },
+    { path = "Cargo.toml", format = "sdist" },
+    { path = "Cargo.lock", format = "sdist" },
+]
+
+[tool.pytest.ini_options]
+testpaths = ["python/tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"

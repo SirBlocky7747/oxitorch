@@ -1,0 +1,74 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/oxi-core",
+    "crates/oxi-tensor",
+    "crates/oxi-autograd",
+    "crates/oxi-nn",
+    "crates/oxi-optim",
+    "crates/oxi-data",
+    "crates/oxi-io",
+    "crates/oxi-bindings",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+# pyo3 0.27 requires 1.83; keep the workspace MSRV at or above the highest
+# dependency MSRV so older toolchains get a clear error.
+rust-version = "1.83"
+authors = ["Oxitorch contributors"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/oxitorch/oxitorch"
+homepage = "https://github.com/oxitorch/oxitorch"
+documentation = "https://docs.rs/oxitorch"
+description = "A PyTorch-equivalent deep-learning library with a Rust core (tensor engine, autograd, NN layers) exposed to Python via PyO3."
+
+[workspace.dependencies]
+# Internal crates — always exact paths so the workspace is self-contained.
+oxi-core = { path = "crates/oxi-core", version = "0.1.0" }
+oxi-tensor = { path = "crates/oxi-tensor", version = "0.1.0" }
+oxi-autograd = { path = "crates/oxi-autograd", version = "0.1.0" }
+oxi-nn = { path = "crates/oxi-nn", version = "0.1.0" }
+oxi-optim = { path = "crates/oxi-optim", version = "0.1.0" }
+oxi-data = { path = "crates/oxi-data", version = "0.1.0" }
+oxi-io = { path = "crates/oxi-io", version = "0.1.0" }
+
+# Error handling
+thiserror = "1.0"
+
+# Testing
+criterion = "0.5"
+proptest = "1.4"
+
+[workspace.lints.rust]
+# `deny` (not `forbid`) so the single sanctioned unsafe block — the GEMM call
+# in oxi-tensor's `Tensor::matmul` — can opt out with a targeted, reviewable
+# `#[allow(unsafe_code)]` and a SAFETY comment. Everywhere else, unsafe code
+# is a hard error.
+unsafe_code = "deny"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+# Numeric code converts between usize/i64 at the Python boundary and in
+# shape math; casts are validated (non-negative dims) rather than avoided.
+cast_possible_truncation = "allow"
+cast_possible_wrap = "allow"
+cast_sign_loss = "allow"
+cast_precision_loss = "allow"
+# CamelCase names (PyTorch, Rust) in docs and getter-style APIs are noisy
+# under these two; rely on rustdoc conventions instead.
+doc_markdown = "allow"
+must_use_candidate = "allow"
+module_name_repetitions = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+[profile.bench]
+debug = true

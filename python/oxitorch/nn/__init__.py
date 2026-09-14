@@ -1,0 +1,80 @@
+"""oxitorch.nn — module system (Phase 3 subset + Phase 4 conv layers).
+
+Python-side Modules composing differentiable Rust tensors, mirroring the
+`torch.nn` surface: `Module`/`Sequential`, `Linear`, `Conv2d`, `MaxPool2d`,
+norms, `Embedding`, `Dropout`, activations, plus the `functional` API.
+"""
+
+from .module import Module, Parameter, Sequential
+from . import functional
+from .functional import (
+    cross_entropy,
+    dropout,
+    embedding,
+    gelu,
+    layer_norm,
+    leaky_relu,
+    linear,
+    log_softmax,
+    mse_loss,
+    relu,
+    rms_norm,
+    sigmoid,
+    silu,
+    softmax,
+    tanh,
+)
+from .layers import (
+    Conv2d,
+    Dropout,
+    Embedding,
+    GELU,
+    LayerNorm,
+    LeakyReLU,
+    Linear,
+    MaxPool2d,
+    ReLU,
+    RMSNorm,
+    SiLU,
+    Sigmoid,
+    Softmax,
+    Tanh,
+)
+
+__all__ = [
+    "Module",
+    "Parameter",
+    "Sequential",
+    "functional",
+    "Linear",
+    "Conv2d",
+    "MaxPool2d",
+    "LayerNorm",
+    "RMSNorm",
+    "Embedding",
+    "Dropout",
+    "ReLU",
+    "GELU",
+    "SiLU",
+    "LeakyReLU",
+    "Tanh",
+    "Sigmoid",
+    "Softmax",
+    "linear",
+    "conv2d",
+    "max_pool2d",
+    "layer_norm",
+    "rms_norm",
+    "embedding",
+    "dropout",
+    "relu",
+    "gelu",
+    "silu",
+    "leaky_relu",
+    "tanh",
+    "sigmoid",
+    "softmax",
+    "log_softmax",
+    "mse_loss",
+    "cross_entropy",
+]

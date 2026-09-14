@@ -1,0 +1,27 @@
+[package]
+name = "oxi-tensor"
+description = "Tensor type, dtypes, strides, devices, and CPU kernels for oxitorch."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+oxi-core.workspace = true
+rayon = "1.10"
+matrixmultiply = "0.3"
+
+[dev-dependencies]
+criterion.workspace = true
+proptest.workspace = true
+
+[[bench]]
+name = "matmul"
+harness = false

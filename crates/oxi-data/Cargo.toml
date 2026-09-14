@@ -1,0 +1,19 @@
+[package]
+name = "oxi-data"
+description = "Datasets, loaders, and transforms for oxitorch (Phase 5)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+oxi-core.workspace = true
+oxi-tensor.workspace = true
+flate2 = "1"
